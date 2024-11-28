@@ -1,4 +1,4 @@
-import Calendar from './Calendar.jsx';
+import Calendar from './components/Calendar.jsx';
 
 function App() {
   const now = new Date(2017, 2, 8);

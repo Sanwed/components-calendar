@@ -1,10 +1,19 @@
 function Calendar({date}) {
-  const daysOfWeek = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+  const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+  const shortDaysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   const monthsInGenitiveCase = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
   const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
   
+  function getLocalDay(date) {
+    let day = date.getDay();
+    if (day === 0) { // день недели 0 (воскресенье) в европейской нумерации будет 7
+      day = 7;
+    }
+    return day;
+  }
+  
   function getWeekDay() {
-    return daysOfWeek[date.getDay()];
+    return daysOfWeek[getLocalDay(date) - 1];
   }
   
   function getMonthInGenitiveCase() {
@@ -34,7 +43,7 @@ function Calendar({date}) {
     let dayCounter = 1;
     let nextMonthCounter = 1;
     
-    const prevMonthDaysToShow = firstDay.getDay();
+    const prevMonthDaysToShow = getLocalDay(firstDay) - 1;
     const previousMonthLastDays = getPreviousMonthLastDays(date.getFullYear(), date.getMonth(), prevMonthDaysToShow);
     
     for (let i = 0; i < 6; i++) {
@@ -105,13 +114,15 @@ function Calendar({date}) {
         </colgroup>
         <thead>
         <tr>
-          <th scope="col" title="Понедельник">Пн</th>
-          <th scope="col" title="Вторник">Вт</th>
-          <th scope="col" title="Среда">Ср</th>
-          <th scope="col" title="Четверг">Чт</th>
-          <th scope="col" title="Пятница">Пт</th>
-          <th scope="col" title="Суббота">Сб</th>
-          <th scope="col" title="Воскресенье">Вс</th>
+          {daysOfWeek.map((day, index) => (
+            <th
+              key={`day-of-week-${index + 1}`}
+              scope="col"
+              title={day}
+            >
+              {shortDaysOfWeek[index]}
+            </th>
+          ))}
         </tr>
         </thead>
         <tbody>
